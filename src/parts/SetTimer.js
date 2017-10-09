@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class Standby extends Component {
+class SetTimer extends Component {
     render() {
         return (
             <p>
-                先におやすみなさいを録音する
+                何分？ セットタイムしよ
             </p>
         );
     }
 }
 
-export default Standby;
+export default SetTimer;

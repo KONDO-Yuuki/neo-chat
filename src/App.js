@@ -1,33 +1,50 @@
 import React, {Component} from 'react';
-import Standby from "./components/Standby";
-import Chat from './components/Chat'
-import GoodNight from "./components/GoodNight";
-import {ChatMode, StandbyMode, GoodNightMode} from './commons/symbols'
+import Standby from "./modes/Standby";
+import Meet from './modes/Meet'
+import Finish from "./parts/GoodNight";
+import {MeetMode, StandbyMode, FinishMode, TopMode} from './commons/symbols'
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import Top from "./modes/Top";
+import TextChat from "./parts/TextChat";
 
 class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            route: StandbyMode
+            route: FinishMode
         }
     }
 
     render() {
         const currentRoute = () => {
             switch (this.state.route) {
-                case ChatMode:
-                    return <Chat/>
-                case GoodNightMode:
-                    return <GoodNight/>
+                case MeetMode:
+                    return <Meet/>
+                case FinishMode:
+                    return <Finish/>
                 case StandbyMode:
-                default:
                     return <Standby/>
-
+                case TopMode:
+                default:
+                    return <Top/>
             }
         }
+        const hasChat =
+            this.state.route === StandbyMode ||
+            this.state.route === MeetMode
         return (
             <div>
+                <AppBar position="static" color="default">
+                    <Toolbar>
+                        <Typography type="title" color="inherit">
+                            寝落ちゃっと
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
                 {currentRoute()}
+                {hasChat ? <TextChat/> : null}
             </div>
         );
     }

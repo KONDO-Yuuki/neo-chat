@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import Recorder from "../parts/Recorder";
 
-class Chat extends Component {
+class Standby extends Component {
     render() {
         return (
             <p>
-                チャット
+                <Recorder/>
             </p>
         );
     }
 }
 
-export default Chat;
+export default Standby;
