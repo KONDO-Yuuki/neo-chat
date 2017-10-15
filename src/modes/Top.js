@@ -1,14 +1,20 @@
-import React, { Component } from 'react';
-import Info from '../parts/Info'
-import Connector from "../parts/Connector";
+import React, {Component} from 'react';
+import Info from '../components/Info'
+import Connector from "../components/Connector";
+import {TopMode} from '../commons/const';
+
 class Top extends Component {
+
     render() {
-        return (
-            <div>
-                <Info/>
-                <Connector/>
-            </div>
-        );
+        if (this.props.rendFlg === TopMode) {
+            return (
+                <div>
+                    <Info/>
+                    <Connector{...this.props}/>
+                </div>
+            );
+        }
+        return null;
     }
 }
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import GoodNight from "../parts/GoodNight";
+import GoodNight from "../components/GoodNight";
 
 class Finish extends Component {
     render() {

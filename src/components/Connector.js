@@ -1,12 +1,34 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import TextField from 'material-ui/TextField';
+import Card, {CardContent} from 'material-ui/Card';
+import Button from 'material-ui/Button';
+
 
 class Connector extends Component {
+    componentWillMount() {
+        console.log('Connecter load')
+    }
+
     render() {
         return (
-            <p>
-                <textarea></textarea>
-                <button>接続</button>
-            </p>
+            <div>
+                <Card>
+                    <CardContent>
+                        【your id】{this.props.userId}
+                    </CardContent>
+                </Card>
+                <TextField
+                    id="name"
+                    label="Dear Id"
+                    onChange={(event) => {
+                        this.props.dearIdChange(event.target.value)
+                    }}
+                    margin="normal"
+                />
+                <Button raised color="accent" onClick={this.props.nextMode}>
+                    接続
+                </Button>
+            </div>
         );
     }
 }

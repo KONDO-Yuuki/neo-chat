@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Recorder from "../parts/Recorder";
+import Recorder from "../components/Recorder";
 
 class Standby extends Component {
     render() {
         return (
             <p>
-                <Recorder/>
+                <Recorder {...this.props}/>
             </p>
         );
     }

@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {MeetMode} from '../commons/const';
+
 
 class Meet extends Component {
     render() {
-        return (
-            <p>
-                小出ちゃんがいる
-            </p>
-        );
+        if (this.props.rendFlg == MeetMode) {
+            return (
+                <video autoPlay src={this.props.userVideoStream}></video>
+            );
+        }
+        return null;
     }
 }
 
