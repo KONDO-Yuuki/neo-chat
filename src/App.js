@@ -29,25 +29,19 @@ class App extends Component {
 
     componentWillMount() {
         this.webRTCManager.connectSignal(this.setUserId)
-        this.webRTCManager.setMeet()
         this.webRTCManager.getStream(true, this.setUserVideoStream)
+        this.webRTCManager.setMeet(this.dearIdChange, this.state.localStream,
+            this.setConnectedCall, this.setDearVideo, this.goMeet)
     }
 
     setUserId = (uid) => {
         this.setState({userId: uid})
     }
 
-
+    setConnectedCall = (call) => {
+        this.setState({connectedCall: call})
+    }
     goStandby = () => {
-        // let stream
-        // new Promise(() => {
-        //     stream = this.webRTCManager.getStream()
-        // }).then(() => {
-        //     this.setState({
-        //         localStream: stream,
-        //         route: StandbyMode
-        //     })
-        // })
     }
 
     goMeet = () => {
@@ -59,12 +53,17 @@ class App extends Component {
     }
 
     dearIdChange = (id) => {
-        this.setState({peerId: id})
+        this.setState({dearId: id})
+    }
+
+    setDearVideo = (stream) => {
+        this.setState({dearVideoStream: stream})
     }
 
     tryConnect = () => {
-        this.webRTCManager.connectStart(this.state.dearId)
+        this.webRTCManager.connectStart(this.state.dearId, this.state.localStream, this.setDearVideo)
     }
+
 
     setUserVideoStream = (src) => {
         this.setState({
@@ -74,15 +73,13 @@ class App extends Component {
     }
 
     render() {
-        const currentRoute = () => {
+        const deprecatedCurrentRoute = () => {
             switch (this.state.route) {
                 case StandbyMode:
                     return <Standby
                         rendFlg={this.state.route}
                         nextMode={this.goMeet}
                         setUserVoice={this.saveUserVoice}/>
-                case MeetMode:
-                    return
                 case FinishMode:
                     return <Finish
                         rendFlg={this.state.route}/>
@@ -107,19 +104,19 @@ class App extends Component {
                 <Top
                     rendFlg={this.state.route}
                     nextMode={this.goMeet}
+                    tryConnect={this.tryConnect}
                     userId={this.state.userId}
                     dearIdChange={this.dearIdChange}
                 />
                 <Meet
                     rendFlg={this.state.route}
                     nextMode={this.goFinish}
-                    userVideoStream={this.state.userVideoStream}/>
-                {currentRoute()}
+                    dearVideoStream={this.state.dearVideoStream}/>
+                {deprecatedCurrentRoute()}
                 {hasChat ? <TextChat/> : null}
             </div>
         );
     }
 }
 
-console.log('Thank you my best friends!')
 export default App;

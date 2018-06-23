@@ -23,26 +23,27 @@ export default class webRTCManager {
      * 相手からのビデオ通話接続を確立する
      * @return ユーザのvideoタグのsrcになる映像ストリームオブジェクト
      */
-    setMeet() {
+    setMeet(setDearId, localStream, saveCallFunc, setDearVideoFunc, goNext) {
         // 相手からビデオ通話がかかってきた場合、このcallイベントが呼ばれる
         // - 渡されるcallオブジェクトを操作することで、ビデオ映像を送受信できる
-        return this.peer.on('call', (call) => {
+        this.peer.on('call', (call) => {
+
+            setDearId(call.peer);
 
             // 切断時に利用するため、コールオブジェクトを保存しておく
-            this.connectedCall = call;
-
             // 自分の映像ストリームを相手に渡す
             // - getUserMediaで取得したストリームオブジェクトを指定する
-            call.answer(this.localStream);
+            call.answer(localStream);
 
             // 相手のストリームが渡された場合、このstreamイベントが呼ばれる
             // - 渡されるstreamオブジェクトは相手の映像についてのストリームオブジェクト
             call.on('stream', (stream) => {
-
                 // 映像ストリームオブジェクトをURLに変換する
                 // - video要素に表示できる形にするため変換している
-                return this.createObjectURL(stream);
+                setDearVideoFunc(this.createStreamSrc(stream));
+                goNext()
             });
+            saveCallFunc(call)
         });
     }
 
@@ -52,16 +53,15 @@ export default class webRTCManager {
      * @param videoFlg ビデオストリームを取得するか
      * @returns ディアのvideoタグのsrcになる映像ストリームオブジェクト
      */
-    getStream(videoFlg, func) {
+    getStream(videoFlg, saveStreamFunc) {
         // カメラ／マイクのストリームを取得する
-        return navigator.mediaDevices.getUserMedia({audio: true, video: videoFlg})
+        navigator.mediaDevices.getUserMedia({audio: true, video: videoFlg})
             .then((stream) => {
                 // このストリームを通話がかかってき場合と、通話をかける場合に利用するため、保存しておく
-                func(stream);
+                saveStreamFunc(stream);
             })
             .catch(() => {
                 console.log("Error!");
-                return 'errorっすよ'
             });
     }
 
@@ -78,16 +78,13 @@ export default class webRTCManager {
      * ディアと接続する
      * @param dearId
      */
-    connectStart(dearId, localStream, ) {
-        const call = this.peer.call(dearId, this.localStream);
-        console.log("connect start!")
-        // 相手のストリームが渡された場合、このstreamイベントが呼ばれる
-        // - 渡されるstreamオブジェクトは相手の映像についてのストリームオブジェクト
+    connectStart(dearId, localStream, setDearVideoFunc) {
+        const call = this.peer.call(dearId, localStream)
         call.on('stream', (stream) => {
-            // 映像ストリームオブジェクトをURLに変換する
-            // - video要素に表示できる形にするため変換している
             // video要素のsrcに設定することで、映像を表示する
-             this.createObjectURL(stream);
+            console.log('call streams!')
+            console.log(this.createStreamSrc(stream))
+            setDearVideoFunc(this.createStreamSrc(stream));
         });
     };
 

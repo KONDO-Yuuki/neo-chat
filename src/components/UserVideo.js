@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import {StandbyMode, MeetMode} from '../commons/const';
+import {MeetMode} from '../commons/const';
 
 class UserVideo extends Component {
-
     render() {
         if (this.props.rendFlg === MeetMode) {
             return (
@@ -13,5 +11,4 @@ class UserVideo extends Component {
         return null;
     }
 }
-
 export default UserVideo;

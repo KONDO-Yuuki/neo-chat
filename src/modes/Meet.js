@@ -4,9 +4,9 @@ import {MeetMode} from '../commons/const';
 
 class Meet extends Component {
     render() {
-        if (this.props.rendFlg == MeetMode) {
+        if (this.props.rendFlg === MeetMode) {
             return (
-                <video autoPlay src={this.props.userVideoStream}></video>
+                <video autoPlay src={this.props.dearVideoStream}></video>
             );
         }
         return null;

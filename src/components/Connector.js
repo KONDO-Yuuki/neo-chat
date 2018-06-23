@@ -5,8 +5,11 @@ import Button from 'material-ui/Button';
 
 
 class Connector extends Component {
-    componentWillMount() {
-        console.log('Connecter load')
+
+    handleClickConnect = () => {
+        this.props.nextMode()
+        this.props.tryConnect()
+
     }
 
     render() {
@@ -25,7 +28,7 @@ class Connector extends Component {
                     }}
                     margin="normal"
                 />
-                <Button raised color="accent" onClick={this.props.nextMode}>
+                <Button raised color="accent" onClick={this.handleClickConnect}>
                     接続
                 </Button>
             </div>
